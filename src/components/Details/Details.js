@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-const Details = ({ games }) => {
+const Details = ({ games, addComment }) => {
     const { gameId } = useParams();
     const [comment, setComment] = useState({
         username: '',
@@ -13,6 +13,7 @@ const Details = ({ games }) => {
     const addCommentHandler = (e) => {
         e.preventDefault();
         console.log(comment);
+        addComment(gameId, `${comment.username}: ${comment.comment}`)//po tozi na4in pribavihme comentarite kum game state
     }
 
     //zapazvame state po tozi na4in
@@ -43,12 +44,17 @@ const Details = ({ games }) => {
                         <li className="comment">
                             <p>Content: I rate this one quite highly.</p>
                         </li>
-                        <li className="comment">
-                            <p>Content: The best game.</p>
-                        </li>
+                        {game.comments?.map(x=>
+                          <li className="comment">
+                          <p>{x}</p>
+                      </li>  
+                      )}
+                        
                     </ul>
                     {/* Display paragraph: If there are no games in the database */}
-                    <p className="no-comment">No comments.</p>
+                    {!game.comments &&
+                     <p className="no-comment">No comments.</p>}
+                   
                 </div>
                 {/* Edit/Delete buttons ( Only for creator of this game )  */}
                 <div className="buttons">
